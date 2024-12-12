@@ -19,6 +19,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           node-version: '18.x'
       - run: npm test
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
