@@ -6,6 +6,10 @@ inputs:
   github-token:
     description: The GitHub token
     required: true
+  node-version:
+    description: Node JS version
+    required: true
+    type: string
 
 runs:
   using: composite
@@ -17,7 +21,7 @@ runs:
     - name: use node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18.x'
+        node-version: ${{ inputs.node-version }}
     - name: npm install
       shell: bash
       run: npm install

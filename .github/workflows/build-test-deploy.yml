@@ -1,5 +1,5 @@
 name: build-test-deploy
-on: push
+on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -8,6 +8,7 @@ jobs:
         uses: bel-from-nz/actions-learning-pathway/.github/actions/learnbuild@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: '18.x'
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -16,6 +17,7 @@ jobs:
         uses: bel-from-nz/actions-learning-pathway/.github/actions/learnbuild@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: '18.x'
       - run: npm test
   deploy:
     needs: build
@@ -35,6 +37,7 @@ jobs:
         uses: bel-from-nz/actions-learning-pathway/.github/actions/learnbuild@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: '18.x'
 
       - name: configure github pages
         uses: actions/configure-pages@v3
