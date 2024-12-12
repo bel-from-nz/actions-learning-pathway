@@ -1,6 +1,6 @@
 author: bel-from-nz
-name: Docs check
-description: Checks that documentation has been updated on PR
+name: Learning Pathway build
+description: node build for Learning pathway tutorial
 
 inputs:
   github-token:
