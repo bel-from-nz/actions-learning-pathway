@@ -1,0 +1,22 @@
+author: bel-from-nz
+name: Docs check
+description: Checks that documentation has been updated on PR
+
+inputs:
+  github-token:
+    description: The GitHub token
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: checkout repo
+      uses: actions/checkout@v4
+      with:
+        token: ${{ inputs.github-token }}
+    - name: use node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+    - run: npm install
+    - run: npm run build
