@@ -1,0 +1,19 @@
+author: bel-from-nz
+name: Echo This
+description: test run script
+
+inputs:
+  github-token:
+    description: The GitHub token
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: checkout repo
+      uses: actions/checkout@v4
+      with:
+        token: ${{ inputs.github-token }}
+    - name: run echo
+      shell: bash
+      run: ${{ github.action_path }}/echo.sh
