@@ -16,4 +16,4 @@ runs:
         token: ${{ inputs.github-token }}
     - name: run echo
       shell: bash
-      run: ${{ github.action_path }}/echo.sh
+      run: bash ${{ github.action_path }}/echo.sh
