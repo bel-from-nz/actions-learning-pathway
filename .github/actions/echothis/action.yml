@@ -26,6 +26,4 @@ runs:
     - name: run echo
       id: run-echo
       shell: bash
-      run: bash ${{ github.action_path }}/echo.sh
-      args:
-        - ${{ inputs.echo-text }}
+      run: bash ${{ github.action_path }}/echo.sh ${{ inputs.echo-text }}
