@@ -1,3 +1,5 @@
 #!/bin/bash
 
-echo "Running echo bash script"
+echo "Running script with text - $1"
+time=$(date)
+echo "time=$time" >> $GITHUB_OUTPUT
