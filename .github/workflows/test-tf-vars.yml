@@ -1,0 +1,34 @@
+name: Test TF Vars
+on: workflow_dispatch
+
+jobs:
+  testvars:
+    runs-on: ubuntu-latest
+
+    env:
+      TFVARS_1: ""
+      TFVARS_2: "test1=value1,test2=value2 and value3,test3_blah=blah"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: run tfvars 1
+      id: run-tf-vars-1
+      uses: bel-from-nz/actions-learning-pathway/.github/actions/tfvar@main
+      with:
+        tfvar-list: ${{ env.TFVARS_1 }}
+
+    - name: run tfvars 2
+      id: run-tf-vars-2
+      uses: bel-from-nz/actions-learning-pathway/.github/actions/tfvar@main
+      with:
+        tfvar-list: ${{ env.TFVARS_2 }}
+
+    - name: Echo vars
+      id: echo-vars
+      run: |
+        echo $TF_VAR_test1
+        echo $TF_VAR_test2
+        echo $TF_VAR_test3
+      shell: bash
