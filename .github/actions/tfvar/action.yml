@@ -12,10 +12,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set TF_VAR
-      id: set-tf-var
-      shell: pwsh
-      run: |
+  - name: Set TF_VAR
+    id: set-tf-var
+    run: |
       $extraVars="${{ inputs.echo-text }}"
 
       if ($extraVars.Length -eq 0)
@@ -44,3 +43,4 @@ runs:
           exit 1
         }
       }
+    shell: pwsh
