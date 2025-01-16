@@ -14,4 +14,4 @@ jobs:
     environment: "hello world (${{ inputs.env }})"
 
     steps:
-      - run: echo "Hello from called workflow ${{ var.TEST_NAME }}"
+      - run: echo "Hello from called workflow ${{ vars.TEST_NAME }}"
