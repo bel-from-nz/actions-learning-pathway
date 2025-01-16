@@ -11,9 +11,7 @@ on:
 jobs:
   hello-world-job:
     runs-on: ubuntu-latest
-
-    env:
-      MY_VARIABLE: "hello world (${{ inputs.env }})"
+    environment: "hello world (${{ inputs.env }})"
 
     steps:
       - run: echo "Hello from called workflow ${{ var.TEST_NAME }}"
