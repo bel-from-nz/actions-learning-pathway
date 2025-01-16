@@ -2,14 +2,18 @@ name: hello-world-reuse
 on:
   workflow_call:
     inputs:
-      name:
-        description: 'Name to greet'
+      env:
+        description: 'Environment'
         required: true
         type: string
-        default: 'Manual User'
+        default: 'dev'
 
 jobs:
   hello-world-job:
     runs-on: ubuntu-latest
+
+    env:
+      MY_VARIABLE: "hello world (${{ inputs.env }})"
+
     steps:
-      - run: echo "Hello from called workflow ${{ inputs.name }}"
+      - run: echo "Hello from called workflow ${{ var.TEST_NAME }}"
