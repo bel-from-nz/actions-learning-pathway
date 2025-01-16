@@ -1,9 +1,13 @@
 name: hello-world
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 
 jobs:
   call-hello-world-job:
-    uses: bel-from-nz/actions-learning-pathway/.github/workflows/hello-world-reuse@main
+    uses: bel-from-nz/actions-learning-pathway/.github/workflows/hello-world-reuse.yml@main
     with:
       name: Caller1
+
+  call-hello-world-job2:
+    uses: bel-from-nz/actions-learning-pathway/.github/workflows/hello-world-reuse.yml@main
+    with:
+      name: Caller2
