@@ -1,0 +1,15 @@
+name: hello-world-reuse
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: 'Name to greet'
+        required: true
+        type: string
+        default: 'Manual User'
+
+jobs:
+  hello-world-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello from called workflow ${{ inputs.name }}"
