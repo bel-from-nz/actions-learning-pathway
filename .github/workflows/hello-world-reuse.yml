@@ -37,6 +37,9 @@ jobs:
             Terraform Destroy has been requested.
 
             Pipeline: ${{ github.workflow }}
+            Event: ${{ github.event_name }}
             Requested for: ${{ github.actor }}
             Repo: ${{ github.repository }}
+            Ref: ${{ github.ref }}
+            Environment: ${{ inputs.env }}
           exclude-workflow-initiator-as-approver: false
