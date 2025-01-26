@@ -5,9 +5,12 @@ jobs:
   call-hello-world-job:
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/hello-world-reuse.yml@main
     with:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
       env: dev
 
   call-hello-world-job2:
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/hello-world-reuse.yml@main
     with:
       env: test
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      destroyResources: true
