@@ -42,4 +42,5 @@ jobs:
             Repo: ${{ github.repository }}
             Ref: ${{ github.ref }}
             Environment: ${{ inputs.env }}
+            Commit: ${{ github.event.commits[0].message }}
           exclude-workflow-initiator-as-approver: false
