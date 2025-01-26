@@ -23,6 +23,9 @@ jobs:
 
   wait-for-destroy-confirm:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     if: ${{ inputs.destroyResources }}
     steps:
       - uses: trstringer/manual-approval@v1
