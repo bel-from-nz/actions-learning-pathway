@@ -3,11 +3,15 @@ on: workflow_dispatch
 
 jobs:
   call-hello-world-job:
+    permissions:
+      issues: write
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/hello-world-reuse.yml@main
     with:
       env: dev
 
   call-hello-world-job2:
+    permissions:
+      issues: write
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/hello-world-reuse.yml@main
     with:
       env: test
