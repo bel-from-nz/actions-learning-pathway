@@ -1,9 +1,6 @@
 name: hello-world
 on: workflow_dispatch
 
-permissions:
-  contents: read
-
 jobs:
   call-hello-world-job:
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/hello-world-reuse.yml@main
