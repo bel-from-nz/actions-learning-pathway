@@ -2,10 +2,6 @@ name: hello-world-reuse
 on:
   workflow_call:
     inputs:
-      github-token:
-        description: The GitHub token
-        type: string
-        required: true
       env:
         description: 'Environment'
         required: true
@@ -13,7 +9,7 @@ on:
         default: 'dev'
       destroyResources:
         description: 'Destroy resources'
-        required: true
+        required: false
         type: boolean
         default: false
 
@@ -31,7 +27,7 @@ jobs:
     steps:
       - uses: trstringer/manual-approval@v1
         with:
-          secret: ${{ inputs.github-token }}
+          secret: ${{ secrets.GITHUB_TOKEN }}
           approvers: bel-from-nz
           minimum-approvals: 1
           issue-title: "Terraform Destroy has been requested"
