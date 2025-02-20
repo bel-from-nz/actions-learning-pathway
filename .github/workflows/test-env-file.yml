@@ -1,0 +1,38 @@
+name: test-env-file
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment for workflow'
+        required: true
+        type: choice
+        options:
+          - dev
+          - test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      ENV_FILE: "${{ github.workspace }}/worflow_vars/${{ inputs.environment }}-vars.env"  # This is a public environment variable
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Import environment variables from a file
+        id: import-env
+        shell: bash
+        run: |
+          while read line; do
+            echo "$line" >> $GITHUB_ENV
+          done < ${{ env.ENV_FILE }}
+
+      - name: Echo environment variable
+        run: |
+          echo "Runner from var file is ${{ vars.RUNNER }}"
+          echo "TF State File name from var file is ${{ vars.TF_STATE_FILE }}"
