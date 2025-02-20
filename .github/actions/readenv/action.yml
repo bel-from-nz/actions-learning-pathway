@@ -1,0 +1,28 @@
+author: bel-from-nz
+name: Import Env File
+description: Imports env vars from file
+
+inputs:
+  github-token:
+    description: The GitHub token
+    required: true
+  env-file:
+    description: Text to echo
+    required: true
+    type: string
+
+runs:
+  using: composite
+  steps:
+    - name: checkout repo
+      uses: actions/checkout@v4
+      with:
+        token: ${{ inputs.github-token }}
+
+    - name: Import environment variables from a file
+      id: import-env
+      shell: bash
+      run: |
+        while read line; do
+          echo "$line" >> $GITHUB_ENV
+        done < ${{ inputs.env-file }}
