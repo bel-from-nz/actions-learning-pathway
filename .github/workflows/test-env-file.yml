@@ -8,12 +8,18 @@ on:
         required: true
         type: choice
         options:
-          - dev
-          - test
+          - development
+          - production
 
 jobs:
   getvars:
     runs-on: ubuntu-latest
+
+    outputs:
+      RUNNER: ${{ env.RUNNER == '' && 'ubuntu-latest' || env.RUNNER }}
+      TF_STATE_FILE: ${{ env.TF_STATE_FILE == '' && 'default-01.tfstate' || env.TF_STATE_FILE }}
+      TF_BLOB_CONTAINER: ${{ env.TF_BLOB_CONTAINER == '' && 'tfstate' || env.TF_BLOB_CONTAINER }}
+
 
     env:
       ENV_FILE: "${{ github.workspace }}/workflow_vars/${{ inputs.environment }}-vars.env"  # This is a public environment variable
@@ -31,3 +37,21 @@ jobs:
         run: |
           echo "Runner from var file is ${{ env.RUNNER }}"
           echo "TF State File name from var file is ${{ env.TF_STATE_FILE }}"
+
+  envjob:
+    needs: getvars
+    runs-on: ${{ needs.getvars.outputs.RUNNER }}
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Echo environment variable
+        run: echo "My DEV environment variable is ${{ vars.TEST_ENV_VAR }}"
+
+      - name: Echo environment variable
+        run: |
+          echo "Runner from var file is ${{ needs.getvars.outputs.RUNNER }}"
+          echo "TF State File name from var file is ${{ needs.getvars.outputs.TF_STATE_FILE }}"
+          echo "TF Blob container name from var file is ${{ needs.getvars.outputs.TF_BLOB_CONTAINER }}"
