@@ -31,6 +31,7 @@ jobs:
         uses: bel-from-nz/actions-learning-pathway/.github/actions/readenv@main
         with:
           env-file: ${{ env.ENV_FILE }}
+          env-dir: ${{ github.workspace }}
 
       - name: Echo environment variable
         run: |
