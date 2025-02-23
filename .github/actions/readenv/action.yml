@@ -15,7 +15,6 @@ runs:
       id: import-env
       shell: bash
       run: |
-        while read line; do
-          echo $line
+        while IFS= read -r line || [[ -n "$line" ]]; do
           echo $line >> $GITHUB_ENV
         done < ${{ inputs.env-file }}
