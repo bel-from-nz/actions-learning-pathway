@@ -12,26 +12,20 @@ on:
           - test
 
 jobs:
-  build:
+  getvars:
     runs-on: ubuntu-latest
 
     env:
-      ENV_FILE: "${{ github.workspace }}/worflow_vars/${{ inputs.environment }}-vars.env"  # This is a public environment variable
+      ENV_FILE: "${{ github.workspace }}/workflow_vars/${{ inputs.environment }}-vars.env"  # This is a public environment variable
 
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
 
-      - name: Dir check
-        run: |
-          pwd
-          ls -l ${{ github.workspace }}
-
       - name: Read Vars
         uses: bel-from-nz/actions-learning-pathway/.github/actions/readenv@main
         with:
           env-file: ${{ env.ENV_FILE }}
-          env-dir: ${{ github.workspace }}
 
       - name: Echo environment variable
         run: |
