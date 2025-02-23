@@ -16,6 +16,6 @@ runs:
       shell: bash
       run: |
         while read line; do
-          echo "$line"
-          echo "$line" >> $GITHUB_ENV
+          echo $line
+          echo $line >> $GITHUB_ENV
         done < ${{ inputs.env-file }}
