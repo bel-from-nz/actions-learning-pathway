@@ -29,5 +29,5 @@ jobs:
 
       - name: Echo environment variable
         run: |
-          echo "Runner from var file is ${{ vars.RUNNER }}"
-          echo "TF State File name from var file is ${{ vars.TF_STATE_FILE }}"
+          echo "Runner from var file is ${{ env.RUNNER }}"
+          echo "TF State File name from var file is ${{ env.TF_STATE_FILE }}"

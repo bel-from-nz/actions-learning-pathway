@@ -19,4 +19,3 @@ runs:
           echo "$line"
           echo "$line" >> $GITHUB_ENV
         done < ${{ inputs.env-file }}
-        cat ${{ inputs.env-file }}
