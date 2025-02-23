@@ -37,6 +37,7 @@ jobs:
         run: |
           echo "Runner from var file is ${{ env.RUNNER }}"
           echo "TF State File name from var file is ${{ env.TF_STATE_FILE }}"
+          echo "TF Blob container name from var file is ${{ env.TF_BLOB_CONTAINER }}"
 
   envjob:
     needs: getvars
@@ -50,7 +51,7 @@ jobs:
       - name: Echo environment variable
         run: echo "My DEV environment variable is ${{ vars.TEST_ENV_VAR }}"
 
-      - name: Echo environment variable
+      - name: Echo Get Vars output
         run: |
           echo "Runner from var file is ${{ needs.getvars.outputs.RUNNER }}"
           echo "TF State File name from var file is ${{ needs.getvars.outputs.TF_STATE_FILE }}"
