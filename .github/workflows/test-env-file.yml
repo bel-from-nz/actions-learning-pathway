@@ -16,12 +16,11 @@ defaults:
     shell: bash
 
 env:
-  RUNNER: ubuntu-latest
   ENV_FILE: "${{ github.workspace }}/workflow_vars/${{ inputs.environment }}-vars.env"
 
 jobs:
   getvars:
-    runs-on: $RUNNER
+    runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
       - name: checkout repo
