@@ -34,7 +34,7 @@ jobs:
           env-file: ${{ env.ENV_FILE }}
 
       - name: Echo environment variable
-        run: echo "My DEV environment variable is ${{ vars.TEST_ENV_VAR }}"
+        run: echo "My environment variable is ${{ vars.TEST_ENV_VAR }}"
 
       - name: Set Env Vars
         if: ${{ hashFiles(env.ENV_FILE) == ''}}
