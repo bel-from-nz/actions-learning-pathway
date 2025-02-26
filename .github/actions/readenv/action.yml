@@ -16,15 +16,5 @@ runs:
       shell: bash
       run: |
         while IFS= read -r line || [[ -n "$line" ]]; do
-          echo $line >> $GITHUB_OUTPUT
+          echo $line >> $GITHUB_ENV
         done < ${{ inputs.env-file }}
-    - name: Set environment variables
-      id: set-env
-      shell: bash
-      run: |
-        echo "tf-subscription-id=${{ steps.import-env.outputs.tf-subscription-id }}" >> $GITHUB_ENV
-        echo "tf-state-resource-group=${{ steps.import-env.outputs.tf-state-resource-group }}" >> $GITHUB_ENV
-        echo "tf-state-blob-account=${{ steps.import-env.outputs.tf-state-blob-account }}" >> $GITHUB_ENV
-        echo "tf-state-blob-container=${{ steps.import-env.outputs.tf-state-blob-container == '' && 'tfstate' || steps.import-env.outputs.tf-state-blob-container }}">> $GITHUB_ENV
-        echo "tf-var-file=${{ steps.import-env.outputs.tf-var-file }}" >> $GITHUB_ENV
-        echo "tf-blob-file=${{ steps.import-env.outputs.tf-blob-file  == '' && 'terraform.tfstate' || steps.import-env.outputs.tf-blob-file }}" >> $GITHUB_ENV

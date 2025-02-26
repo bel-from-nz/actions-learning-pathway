@@ -27,18 +27,30 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Read Vars
+        if: ${{ env.ENV_FILE != ''}}
         uses: bel-from-nz/actions-learning-pathway/.github/actions/readenv@main
         with:
-          env-file: $ENV_FILE
+          env-file: ${{ env.ENV_FILE }}
 
       - name: Echo environment variable
         run: echo "My DEV environment variable is ${{ vars.TEST_ENV_VAR }}"
 
       - name: Echo Get Vars output
+        if: ${{ env.ENV_FILE != ''}}
         run: |
           echo "Sub: ${{ env.tf-subscription-id }}"
           echo "RG: ${{ env.tf-state-resource-group }}"
           echo "Storage: ${{ env.tf-state-blob-account }}"
-          echo "Container: ${{ env.tf-state-blob-container }}"
+          echo "Container: ${{ env.tf-state-blob-container == '' && 'tfstate' || env.tf-state-blob-container }}"
           echo "vars: ${{ env.tf-var-file }}"
-          echo "state: ${{ env.tf-blob-file }}"
+          echo "state: ${{ env.tf-blob-file  == '' && 'terraform.tfstate' || env.tf-blob-file }}"
+
+      - name: Echo Get Vars output
+        if: ${{ env.ENV_FILE == ''}}
+        run: |
+          echo "Sub: ${{ vars.tf-subscription-id }}"
+          echo "RG: ${{ vars.tf-state-resource-group }}"
+          echo "Storage: ${{ vars.tf-state-blob-account }}"
+          echo "Container: ${{ vars.tf-state-blob-container == '' && 'tfstate' || vars.tf-state-blob-container }}"
+          echo "vars: ${{ vars.tf-var-file }}"
+          echo "state: ${{ vars.tf-blob-file  == '' && 'terraform.tfstate' || vars.tf-blob-file }}"
