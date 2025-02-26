@@ -9,6 +9,7 @@ on:
         type: choice
         options:
           - development
+          - test
           - production
 
 defaults:
@@ -27,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Read Vars
-        if: ${{ env.ENV_FILE != ''}}
+        if: ${{ hashFiles(env.ENV_FILE) != ''}}
         uses: bel-from-nz/actions-learning-pathway/.github/actions/readenv@main
         with:
           env-file: ${{ env.ENV_FILE }}
@@ -36,7 +37,7 @@ jobs:
         run: echo "My DEV environment variable is ${{ vars.TEST_ENV_VAR }}"
 
       - name: Echo Get Vars output
-        if: ${{ env.ENV_FILE != ''}}
+        if: ${{ hashFiles(env.ENV_FILE) != ''}}
         run: |
           echo "Sub: ${{ env.tf-subscription-id }}"
           echo "RG: ${{ env.tf-state-resource-group }}"
@@ -46,7 +47,7 @@ jobs:
           echo "state: ${{ env.tf-blob-file  == '' && 'terraform.tfstate' || env.tf-blob-file }}"
 
       - name: Echo Get Vars output
-        if: ${{ env.ENV_FILE == ''}}
+        if: ${{ hashFiles(env.ENV_FILE) == ''}}
         run: |
           echo "Sub: ${{ vars.tf-subscription-id }}"
           echo "RG: ${{ vars.tf-state-resource-group }}"
