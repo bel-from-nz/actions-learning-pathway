@@ -33,24 +33,21 @@ jobs:
         with:
           env-file: ${{ env.ENV_FILE }}
 
-      - name: Echo environment variable
-        run: echo "My environment variable is ${{ vars.TEST_ENV_VAR }}"
-
       - name: Set Env Vars
-        if: ${{ hashFiles(env.ENV_FILE) == ''}}
         run: |
-          echo "TF_SUBSCRIPTION_ID=${{ vars.TF_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
-          echo "TF_STATE_RESOURCE_GROUP=${{ vars.TF_STATE_RESOURCE_GROUP }}" >> $GITHUB_ENV
-          echo "TF_STATE_BLOB_ACCOUNT=${{ vars.TF_STATE_BLOB_ACCOUNT }}" >> $GITHUB_ENV
-          echo "TF_STATE_BLOB_CONTAINER=${{ vars.TF_STATE_BLOB_CONTAINER }}" >> $GITHUB_ENV
-          echo "TF_VAR_FILE=${{ vars.TF_VAR_FILE  }}" >> $GITHUB_ENV
-          echo "TF_BLOB_FILE=${{ vars.TF_BLOB_FILE }}" >> $GITHUB_ENV
-
-      - name: Set Env Var defaults
-        run: |
+          echo "TF_SUBSCRIPTION_ID=${{ env.TF_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+          echo "TF_STATE_RESOURCE_GROUP=${{ env.TF_STATE_RESOURCE_GROUP }}" >> $GITHUB_ENV
+          echo "TF_STATE_BLOB_ACCOUNT=${{ env.TF_STATE_BLOB_ACCOUNT }}" >> $GITHUB_ENV
           echo "TF_STATE_BLOB_CONTAINER=${{ env.TF_STATE_BLOB_CONTAINER == '' && 'tfstate' || env.TF_STATE_BLOB_CONTAINER }}" >> $GITHUB_ENV
           echo "TF_VAR_FILE=${{ env.TF_VAR_FILE == '' && format( '{0}.tfenv', inputs.environment) || env.TF_VAR_FILE  }}" >> $GITHUB_ENV
           echo "TF_BLOB_FILE=${{ env.TF_BLOB_FILE  == '' && 'terraform.tfstate' || env.TF_BLOB_FILE }}" >> $GITHUB_ENV
+        env:
+          TF_SUBSCRIPTION_ID: ${{ vars.TF_SUBSCRIPTION_ID || env.TF_SUBSCRIPTION_ID }}
+          TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP || env.TF_STATE_RESOURCE_GROUP }}
+          TF_STATE_BLOB_ACCOUNT: ${{ vars.TF_STATE_BLOB_ACCOUNT || env.TF_STATE_BLOB_ACCOUNT }}
+          TF_STATE_BLOB_CONTAINER: ${{ vars.TF_STATE_BLOB_CONTAINER || env.TF_STATE_BLOB_CONTAINER }}
+          TF_VAR_FILE: ${{ vars.TF_VAR_FILE || env.TF_VAR_FILE }}
+          TF_BLOB_FILE: ${{ vars.TF_BLOB_FILE || env.TF_BLOB_FILE }}
 
       - name: Echo Env Vars
         run: |
