@@ -39,19 +39,19 @@ jobs:
       - name: Echo Get Vars output
         if: ${{ hashFiles(env.ENV_FILE) != ''}}
         run: |
-          echo "Sub: ${{ env.tf-subscription-id }}"
-          echo "RG: ${{ env.tf-state-resource-group }}"
-          echo "Storage: ${{ env.tf-state-blob-account }}"
-          echo "Container: ${{ env.tf-state-blob-container == '' && 'tfstate' || env.tf-state-blob-container }}"
-          echo "vars: ${{ env.tf-var-file }}"
-          echo "state: ${{ env.tf-blob-file  == '' && 'terraform.tfstate' || env.tf-blob-file }}"
+          echo "Sub: ${{ env.TF_SUBSCRIPTION_ID }}"
+          echo "RG: ${{ env.TF_STATE_RESOURCE_GROUP }}"
+          echo "Storage: ${{ env.TF_STATE_BLOB_ACCOUNT }}"
+          echo "Container: ${{ env.TF_STATE_BLOB_CONTAINER == '' && 'tfstate' || env.TF_STATE_BLOB_CONTAINER }}"
+          echo "vars: ${{ env.TF_VAR_FILE }}"
+          echo "state: ${{ env.TF_BLOB_FILE  == '' && 'terraform.tfstate' || env.TF_BLOB_FILE }}"
 
       - name: Echo Get Vars output
         if: ${{ hashFiles(env.ENV_FILE) == ''}}
         run: |
-          echo "Sub: ${{ vars.tf-subscription-id }}"
-          echo "RG: ${{ vars.tf-state-resource-group }}"
-          echo "Storage: ${{ vars.tf-state-blob-account }}"
-          echo "Container: ${{ vars.tf-state-blob-container == '' && 'tfstate' || vars.tf-state-blob-container }}"
-          echo "vars: ${{ vars.tf-var-file }}"
-          echo "state: ${{ vars.tf-blob-file  == '' && 'terraform.tfstate' || vars.tf-blob-file }}"
+          echo "Sub: ${{ vars.TF_SUBSCRIPTION_ID }}"
+          echo "RG: ${{ vars.TF_STATE_RESOURCE_GROUP }}"
+          echo "Storage: ${{ vars.TF_STATE_BLOB_ACCOUNT }}"
+          echo "Container: ${{ vars.TF_STATE_BLOB_CONTAINER == '' && 'tfstate' || vars.TF_STATE_BLOB_CONTAINER }}"
+          echo "vars: ${{ vars.TF_VAR_FILE }}"
+          echo "state: ${{ vars.TF_BLOB_FILE  == '' && 'terraform.tfstate' || vars.TF_BLOB_FILE }}"
