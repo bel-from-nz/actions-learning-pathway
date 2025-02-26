@@ -42,12 +42,11 @@ jobs:
           echo "TF_SUBSCRIPTION_ID=${{ vars.TF_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
           echo "TF_STATE_RESOURCE_GROUP=${{ vars.TF_STATE_RESOURCE_GROUP }}" >> $GITHUB_ENV
           echo "TF_STATE_BLOB_ACCOUNT=${{ vars.TF_STATE_BLOB_ACCOUNT }}" >> $GITHUB_ENV
-          echo "TF_STATE_BLOB_CONTAINER=${{ vars.TF_STATE_BLOB_CONTAINER == '' && 'tfstate' || vars.TF_STATE_BLOB_CONTAINER }}" >> $GITHUB_ENV
-          echo "TF_VAR_FILE=${{ vars.TF_VAR_FILE == '' && format( '{0}.tfvars', inputs.environment) || vars.TF_VAR_FILE  }}" >> $GITHUB_ENV
-          echo "TF_BLOB_FILE=${{ vars.TF_BLOB_FILE  == '' && 'terraform.tfstate' || vars.TF_BLOB_FILE }}" >> $GITHUB_ENV
+          echo "TF_STATE_BLOB_CONTAINER=${{ vars.TF_STATE_BLOB_CONTAINER }}" >> $GITHUB_ENV
+          echo "TF_VAR_FILE=${{ vars.TF_VAR_FILE  }}" >> $GITHUB_ENV
+          echo "TF_BLOB_FILE=${{ vars.TF_BLOB_FILE }}" >> $GITHUB_ENV
 
-      - name: Set Env file defaults
-        if: ${{ hashFiles(env.ENV_FILE) != ''}}
+      - name: Set Env Var defaults
         run: |
           echo "TF_STATE_BLOB_CONTAINER=${{ env.TF_STATE_BLOB_CONTAINER == '' && 'tfstate' || env.TF_STATE_BLOB_CONTAINER }}" >> $GITHUB_ENV
           echo "TF_VAR_FILE=${{ env.TF_VAR_FILE == '' && format( '{0}.tfenv', inputs.environment) || env.TF_VAR_FILE  }}" >> $GITHUB_ENV
