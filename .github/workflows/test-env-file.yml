@@ -11,6 +11,10 @@ on:
           - development
           - test
           - production
+      run_apply:
+        description: 'Run Apply'
+        default: true
+        type: boolean
 
 defaults:
   run:
@@ -23,6 +27,12 @@ jobs:
   getvars:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    env:
+      ARM_CLIENT_ID: "${{ vars.AZURE_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ vars.AZURE_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ vars.AZURE_TENANT_ID }}"
+      ARM_USE_AZUREAD: true
+      ARM_USE_OIDC: true
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
@@ -57,3 +67,23 @@ jobs:
           echo "Container: ${{ env.TF_STATE_BLOB_CONTAINER }}"
           echo "vars: ${{ env.TF_VAR_FILE  }}"
           echo "state: ${{ env.TF_BLOB_FILE }}"
+          echo "arm client: ${{ env.ARM_CLIENT_ID }}"
+          echo "arm sub: ${{ env.ARM_SUBSCRIPTION_ID }}"
+          echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
+
+  runapplytest:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    if: ${{ inputs.run_apply }}
+    env:
+      ARM_CLIENT_ID: "${{ vars.AZURE_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ vars.AZURE_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ vars.AZURE_TENANT_ID }}"
+      ARM_USE_AZUREAD: true
+      ARM_USE_OIDC: true
+    steps:
+      - name: Echo Env Vars for apply
+        run: |
+          echo "arm client: ${{ env.ARM_CLIENT_ID }}"
+          echo "arm sub: ${{ env.ARM_SUBSCRIPTION_ID }}"
+          echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
