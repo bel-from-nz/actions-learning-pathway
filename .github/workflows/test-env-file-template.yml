@@ -56,9 +56,9 @@ jobs:
           TF_STATE_BLOB_CONTAINER: ${{ vars.TF_STATE_BLOB_CONTAINER || env.TF_STATE_BLOB_CONTAINER }}
           TF_VAR_FILE: ${{ vars.TF_VAR_FILE || env.TF_VAR_FILE }}
           TF_BLOB_FILE: ${{ vars.TF_BLOB_FILE || env.TF_BLOB_FILE }}
-          ARM_CLIENT_ID: "${{ vars.AZURE_CLIENT_ID }}"
-          ARM_SUBSCRIPTION_ID: "${{ vars.AZURE_SUBSCRIPTION_ID }}"
-          ARM_TENANT_ID: "${{ vars.AZURE_TENANT_ID }}"
+          ARM_CLIENT_ID: "${{ vars.ARM_CLIENT_ID }}"
+          ARM_SUBSCRIPTION_ID: "${{ vars.ARM_SUBSCRIPTION_ID }}"
+          ARM_TENANT_ID: "${{ vars.ARM_TENANT_ID }}"
 
       - name: Echo Env Vars
         run: |
@@ -76,7 +76,18 @@ jobs:
     runs-on: ${{ inputs.runner }}
     environment: ${{ inputs.environment }}
     if: ${{ inputs.run_apply }}
+    env:
+      ARM_CLIENT_ID: "${{ vars.ARM_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ vars.ARM_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ vars.ARM_TENANT_ID }}"
+      ARM_USE_AZUREAD: true
+      ARM_USE_OIDC: true
     steps:
+      - name: Echo Env Vars for apply
+        run: |
+          echo "arm client: ${{ env.ARM_CLIENT_ID }}"
+          echo "arm sub: ${{ env.ARM_SUBSCRIPTION_ID }}"
+          echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
       - name: Echo Env Vars for apply
         run: |
           echo "arm client: ${{ vars.ARM_CLIENT_ID }}"
