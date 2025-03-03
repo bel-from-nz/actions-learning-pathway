@@ -26,7 +26,7 @@ env:
 
 jobs:
   setenvs:
-    name: "Set Environment variables for ${{ inputs.environment }}"
+    name: "Set Env Vars for ${{ inputs.environment }}"
     runs-on: ${{ inputs.runner }}
     environment: ${{ inputs.environment }}
     env:
