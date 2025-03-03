@@ -25,7 +25,7 @@ env:
   ENV_FILE: "${{ github.workspace }}/workflow_vars/${{ inputs.environment }}-vars.env"
 
 jobs:
-  calltestenv:
+  setenvs:
     runs-on: ${{ inputs.runner }}
     environment: ${{ inputs.environment }}
     env:
