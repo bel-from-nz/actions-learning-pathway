@@ -28,5 +28,5 @@ jobs:
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/test-env-file-template.yml@main
     with:
       environment: ${{ inputs.environment }}
-      run_apply: true
+      run_apply: ${{ inputs.run_apply }}
       runner: ubuntu-latest
