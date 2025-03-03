@@ -20,9 +20,13 @@ defaults:
   run:
     shell: bash
 
+env:
+  runner: ubuntu-latest
+
 jobs:
   call-test-env-file:
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/test-env-file-template.yml@main
     with:
       environment: ${{ inputs.environment }}
       run_apply: true
+      runner: ubuntu-latest

@@ -11,6 +11,11 @@ on:
         description: 'Run Apply'
         default: false
         type: boolean
+      runner:
+        description: 'Runner for workflow'
+        type: string
+        default: ubuntu-latest
+        required: true
 
 defaults:
   run:
@@ -21,7 +26,7 @@ env:
 
 jobs:
   calltestenv:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner }}
     environment: ${{ inputs.environment }}
     env:
       ARM_CLIENT_ID: "${{ vars.AZURE_CLIENT_ID }}"
@@ -68,7 +73,7 @@ jobs:
           echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
 
   runapplytest:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner }}
     environment: ${{ inputs.environment }}
     if: ${{ inputs.run_apply }}
     steps:
