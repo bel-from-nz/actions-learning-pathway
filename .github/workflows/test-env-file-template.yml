@@ -39,9 +39,26 @@ jobs:
           env-file: ${{ env.ENV_FILE }}
 
       - name: Set Terraform Env Vars
-        uses: bel-from-nz/actions-learning-pathway/.github/actions/set-tf-env@main
-        with:
-          environment: ${{ inputs.environment }}
+        run: |
+          echo "TF_SUBSCRIPTION_ID=${{ env.TF_SUBSCRIPTION_ID == '' &&  env.ARM_SUBSCRIPTION_ID || env.TF_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+          echo "TF_STATE_RESOURCE_GROUP=${{ env.TF_STATE_RESOURCE_GROUP }}" >> $GITHUB_ENV
+          echo "TF_STATE_BLOB_ACCOUNT=${{ env.TF_STATE_BLOB_ACCOUNT }}" >> $GITHUB_ENV
+          echo "TF_STATE_BLOB_CONTAINER=${{ env.TF_STATE_BLOB_CONTAINER == '' && 'tfstate' || env.TF_STATE_BLOB_CONTAINER }}" >> $GITHUB_ENV
+          echo "TF_VAR_FILE=${{ env.TF_VAR_FILE == '' && format( '{0}.tfvars', inputs.environment) || env.TF_VAR_FILE  }}" >> $GITHUB_ENV
+          echo "TF_BLOB_FILE=${{ env.TF_BLOB_FILE  == '' && format( '{0}-terraform.tfstate', inputs.environment) || env.TF_BLOB_FILE }}" >> $GITHUB_ENV
+          echo "ARM_CLIENT_ID=${{ env.ARM_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "ARM_SUBSCRIPTION_ID=${{ env.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+          echo "ARM_TENANT_ID=${{ env.ARM_TENANT_ID }}" >> $GITHUB_ENV
+        env:
+          TF_SUBSCRIPTION_ID: ${{ vars.TF_SUBSCRIPTION_ID || env.TF_SUBSCRIPTION_ID }}
+          TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP || env.TF_STATE_RESOURCE_GROUP }}
+          TF_STATE_BLOB_ACCOUNT: ${{ vars.TF_STATE_BLOB_ACCOUNT || env.TF_STATE_BLOB_ACCOUNT }}
+          TF_STATE_BLOB_CONTAINER: ${{ vars.TF_STATE_BLOB_CONTAINER || env.TF_STATE_BLOB_CONTAINER }}
+          TF_VAR_FILE: ${{ vars.TF_VAR_FILE || env.TF_VAR_FILE }}
+          TF_BLOB_FILE: ${{ vars.TF_BLOB_FILE || env.TF_BLOB_FILE }}
+          ARM_CLIENT_ID: "${{ vars.AZURE_CLIENT_ID }}"
+          ARM_SUBSCRIPTION_ID: "${{ vars.AZURE_SUBSCRIPTION_ID }}"
+          ARM_TENANT_ID: "${{ vars.AZURE_TENANT_ID }}"
 
       - name: Echo Env Vars
         run: |
