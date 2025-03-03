@@ -25,6 +25,7 @@ env:
 
 jobs:
   call-test-env-file:
+    name: "Run Var Test for ${{ inputs.environment }}"
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/test-env-file-template.yml@main
     with:
       environment: ${{ inputs.environment }}
