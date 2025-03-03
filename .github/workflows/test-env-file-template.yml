@@ -1,4 +1,4 @@
-name: test-env-file
+name: test-env-file-template
 
 on:
   workflow_call:
