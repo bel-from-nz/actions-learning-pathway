@@ -20,80 +20,9 @@ defaults:
   run:
     shell: bash
 
-env:
-  ENV_FILE: "${{ github.workspace }}/workflow_vars/${{ inputs.environment }}-vars.env"
-
 jobs:
-  getvars:
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    env:
-      ARM_CLIENT_ID: "${{ vars.AZURE_CLIENT_ID }}"
-      ARM_SUBSCRIPTION_ID: "${{ vars.AZURE_SUBSCRIPTION_ID }}"
-      ARM_TENANT_ID: "${{ vars.AZURE_TENANT_ID }}"
-      ARM_USE_AZUREAD: true
-      ARM_USE_OIDC: true
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
-
-      - name: Read Vars
-        if: ${{ hashFiles(env.ENV_FILE) != ''}}
-        uses: bel-from-nz/actions-learning-pathway/.github/actions/readenv@main
-        with:
-          env-file: ${{ env.ENV_FILE }}
-
-      - name: Set Env Vars
-        run: |
-          echo "TF_SUBSCRIPTION_ID=${{ env.TF_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
-          echo "TF_STATE_RESOURCE_GROUP=${{ env.TF_STATE_RESOURCE_GROUP }}" >> $GITHUB_ENV
-          echo "TF_STATE_BLOB_ACCOUNT=${{ env.TF_STATE_BLOB_ACCOUNT }}" >> $GITHUB_ENV
-          echo "TF_STATE_BLOB_CONTAINER=${{ env.TF_STATE_BLOB_CONTAINER == '' && 'tfstate' || env.TF_STATE_BLOB_CONTAINER }}" >> $GITHUB_ENV
-          echo "TF_VAR_FILE=${{ env.TF_VAR_FILE == '' && format( '{0}.tfenv', inputs.environment) || env.TF_VAR_FILE  }}" >> $GITHUB_ENV
-          echo "TF_BLOB_FILE=${{ env.TF_BLOB_FILE  == '' && 'terraform.tfstate' || env.TF_BLOB_FILE }}" >> $GITHUB_ENV
-        env:
-          TF_SUBSCRIPTION_ID: ${{ vars.TF_SUBSCRIPTION_ID || env.TF_SUBSCRIPTION_ID }}
-          TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP || env.TF_STATE_RESOURCE_GROUP }}
-          TF_STATE_BLOB_ACCOUNT: ${{ vars.TF_STATE_BLOB_ACCOUNT || env.TF_STATE_BLOB_ACCOUNT }}
-          TF_STATE_BLOB_CONTAINER: ${{ vars.TF_STATE_BLOB_CONTAINER || env.TF_STATE_BLOB_CONTAINER }}
-          TF_VAR_FILE: ${{ vars.TF_VAR_FILE || env.TF_VAR_FILE }}
-          TF_BLOB_FILE: ${{ vars.TF_BLOB_FILE || env.TF_BLOB_FILE }}
-
-      - name: Echo Env Vars
-        run: |
-          echo "Sub: ${{ env.TF_SUBSCRIPTION_ID }}"
-          echo "RG: ${{ env.TF_STATE_RESOURCE_GROUP }}"
-          echo "Storage: ${{ env.TF_STATE_BLOB_ACCOUNT }}"
-          echo "Container: ${{ env.TF_STATE_BLOB_CONTAINER }}"
-          echo "vars: ${{ env.TF_VAR_FILE  }}"
-          echo "state: ${{ env.TF_BLOB_FILE }}"
-          echo "arm client: ${{ env.ARM_CLIENT_ID }}"
-          echo "arm sub: ${{ env.ARM_SUBSCRIPTION_ID }}"
-          echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
-
-  runapplytest:
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    if: ${{ inputs.run_apply }}
-    steps:
-      - name: Echo Env Vars for apply
-        run: |
-          echo "arm client: ${{ vars.ARM_CLIENT_ID }}"
-          echo "arm sub: ${{ vars.ARM_SUBSCRIPTION_ID }}"
-          echo "arm tenant: ${{ vars.ARM_TENANT_ID }}"
-
-  testdev:
-    runs-on: ubuntu-latest
-    environment: production
-    env:
-      ARM_CLIENT_ID: "${{ vars.AZURE_CLIENT_ID }}"
-      ARM_SUBSCRIPTION_ID: "${{ vars.AZURE_SUBSCRIPTION_ID }}"
-      ARM_TENANT_ID: "${{ vars.AZURE_TENANT_ID }}"
-      ARM_USE_AZUREAD: true
-      ARM_USE_OIDC: true
-    steps:
-      - name: Echo Env Vars for apply
-        run: |
-          echo "arm client: ${{ env.ARM_CLIENT_ID }}"
-          echo "arm sub: ${{ env.ARM_SUBSCRIPTION_ID }}"
-          echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
+  call-test-env-file:
+    uses: bel-from-nz/actions-learning-pathway/.github/workflows/test-env-file-template.yml@main
+    with:
+      environment: ${{ inputs.environment }}
+      run_apply: true
