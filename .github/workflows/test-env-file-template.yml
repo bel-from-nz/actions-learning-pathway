@@ -26,6 +26,7 @@ env:
 
 jobs:
   setenvs:
+    name: "Set Environment variables for ${{ inputs.environment }}"
     runs-on: ${{ inputs.runner }}
     environment: ${{ inputs.environment }}
     env:
@@ -73,6 +74,7 @@ jobs:
           echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
 
   runapplytest:
+    name: "Run Apply test for ${{ inputs.environment }}"
     runs-on: ${{ inputs.runner }}
     environment: ${{ inputs.environment }}
     if: ${{ inputs.run_apply }}
