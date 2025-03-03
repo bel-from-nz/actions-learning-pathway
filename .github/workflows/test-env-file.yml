@@ -13,7 +13,7 @@ on:
           - production
       run_apply:
         description: 'Run Apply'
-        default: true
+        default: false
         type: boolean
 
 defaults:
@@ -72,7 +72,6 @@ jobs:
           echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
 
   runapplytest:
-    needs: getvars
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     if: ${{ inputs.run_apply }}
@@ -82,3 +81,19 @@ jobs:
           echo "arm client: ${{ vars.ARM_CLIENT_ID }}"
           echo "arm sub: ${{ vars.ARM_SUBSCRIPTION_ID }}"
           echo "arm tenant: ${{ vars.ARM_TENANT_ID }}"
+
+  testdev:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      ARM_CLIENT_ID: "${{ vars.AZURE_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ vars.AZURE_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ vars.AZURE_TENANT_ID }}"
+      ARM_USE_AZUREAD: true
+      ARM_USE_OIDC: true
+    steps:
+      - name: Echo Env Vars for apply
+        run: |
+          echo "arm client: ${{ env.ARM_CLIENT_ID }}"
+          echo "arm sub: ${{ env.ARM_SUBSCRIPTION_ID }}"
+          echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
