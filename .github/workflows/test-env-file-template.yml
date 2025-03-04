@@ -7,10 +7,9 @@ on:
         description: 'Environment for workflow'
         type: string
         required: true
-      run_apply:
+      terraform_action:
         description: 'Run Apply'
-        default: false
-        type: boolean
+        type: string
       runner:
         description: 'Runner for workflow'
         type: string
@@ -74,10 +73,10 @@ jobs:
           echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
 
   runapplytest:
-    name: "Run Apply test for ${{ inputs.environment }}"
+    name: "Run ${{ inputs.terraform_action == 'destroy' && 'Destroy' || 'Apply' }} test for ${{ inputs.environment }}"
     runs-on: ${{ inputs.runner }}
     environment: ${{ inputs.environment }}
-    if: ${{ inputs.run_apply }}
+    if: ${{ contains(fromJSON('["destroy", "apply"]'), inputs.terraform_action) }}
     env:
       ARM_CLIENT_ID: "${{ vars.ARM_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ vars.ARM_SUBSCRIPTION_ID }}"

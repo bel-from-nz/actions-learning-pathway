@@ -11,10 +11,14 @@ on:
           - development
           - test
           - production
-      run_apply:
+      terraform_action:
         description: 'Run Apply'
-        default: false
-        type: boolean
+        default: apply
+        type: choice
+        options:
+          - apply
+          - destroy
+          - planonly
 
 defaults:
   run:
@@ -29,5 +33,5 @@ jobs:
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/test-env-file-template.yml@main
     with:
       environment: ${{ inputs.environment }}
-      run_apply: ${{ inputs.run_apply }}
+      terraform_action: ${{ inputs.terraform_action }}
       runner: ubuntu-latest
