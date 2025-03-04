@@ -15,7 +15,7 @@ runs:
   - name: Set TF_VAR
     id: set-tf-var
     run: |
-      $extraVars="${{ inputs.tfvar-list }}"
+      $extraVars=${{ inputs.tfvar-list }}
 
       if ($extraVars.Length -eq 0)
       {
