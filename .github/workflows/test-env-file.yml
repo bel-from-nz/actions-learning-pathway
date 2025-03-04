@@ -27,7 +27,7 @@ defaults:
 env:
   runner: ubuntu-latest
 
-run-name: ${{ inputs.terraform_action }} to ${{ inputs.environment }} by @${{ github.actor }}
+run-name: ${{ inputs.terraform_action }} to ${{ inputs.environment }} by @${{ github.actor }} for ${{ github.workflow }}
 
 jobs:
   call-test-env-file:
