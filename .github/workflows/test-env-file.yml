@@ -12,7 +12,7 @@ on:
           - test
           - production
       terraform_action:
-        description: 'Run Apply'
+        description: 'Terraform Action'
         default: apply
         type: choice
         options:
@@ -26,6 +26,8 @@ defaults:
 
 env:
   runner: ubuntu-latest
+
+run-name: ${{ inputs.terraform_action }} to ${{ inputs.environment }} by @${{ github.actor }}
 
 jobs:
   call-test-env-file:
