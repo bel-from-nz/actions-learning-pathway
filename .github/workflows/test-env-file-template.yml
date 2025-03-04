@@ -27,7 +27,7 @@ jobs:
   setenvs:
     name: "Set Env Vars for ${{ inputs.environment }}"
     runs-on: ${{ inputs.runner }}
-    environment: ${{ inputs.environment }}
+    environment: "${{ inputs.environment }}_plan"
     env:
       ARM_CLIENT_ID: "${{ vars.ARM_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ vars.ARM_SUBSCRIPTION_ID }}"
@@ -73,9 +73,10 @@ jobs:
           echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
 
   runapplytest:
+    needs: setenvs
     name: "Run ${{ inputs.terraform_action == 'destroy' && 'Destroy' || 'Apply' }} test for ${{ inputs.environment }}"
     runs-on: ${{ inputs.runner }}
-    environment: ${{ inputs.environment }}
+    environment: "${{ inputs.environment }}_apply"
     if: ${{ contains(fromJSON('["destroy", "apply"]'), inputs.terraform_action) }}
     env:
       ARM_CLIENT_ID: "${{ vars.ARM_CLIENT_ID }}"
