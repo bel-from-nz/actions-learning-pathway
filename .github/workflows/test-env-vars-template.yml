@@ -37,7 +37,7 @@ jobs:
       TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
       TF_STATE_BLOB_ACCOUNT: ${{ vars.TF_STATE_BLOB_ACCOUNT }}
       TF_STATE_BLOB_CONTAINER: ${{ vars.TF_STATE_BLOB_CONTAINER || 'tfstate' }}
-      TF_VAR_FILE: ${{ vars.TF_VAR_FILE || format( '{0}-terraform.tfstate', inputs.environment) }}
+      TF_VAR_FILE: ${{ vars.TF_VAR_FILE || format( 'iac/environments/{0}.terraform.tfvars', inputs.environment) }}
       TF_BLOB_FILE: ${{ vars.TF_BLOB_FILE || format( '{0}-terraform.tfstate', inputs.environment) }}
 
     steps:
