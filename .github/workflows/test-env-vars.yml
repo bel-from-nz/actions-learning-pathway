@@ -1,4 +1,4 @@
-name: test-env-file
+name: test-env-vars
 
 on:
   workflow_dispatch:
