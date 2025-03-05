@@ -1,7 +1,7 @@
 author: bel-from-nz
 name: Set TFVAR Envs
 id: set-tfvar-env
-description: Sets TFVAR_ Environment Variables
+description: Sets TF_VAR_ Environment Variables
 
 inputs:
   tfvar-list:
