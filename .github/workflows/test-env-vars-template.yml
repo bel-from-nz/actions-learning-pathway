@@ -1,0 +1,85 @@
+name: test-env-vars-template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Environment for workflow'
+        type: string
+        required: true
+      terraform_action:
+        description: 'Run Apply'
+        type: string
+      runner:
+        description: 'Runner for workflow'
+        type: string
+        default: ubuntu-latest
+        required: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  setenvs:
+    name: "Set Env Vars for ${{ inputs.environment }}"
+    runs-on: ${{ inputs.runner }}
+    environment: "${{ inputs.environment }}_plan"
+    env:
+      ## azure resource manager vars
+      ARM_CLIENT_ID: "${{ vars.ARM_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ vars.ARM_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ vars.ARM_TENANT_ID }}"
+      ARM_USE_AZUREAD: true
+      ARM_USE_OIDC: true
+      ## backend vars
+      TF_SUBSCRIPTION_ID: ${{ vars.TF_SUBSCRIPTION_ID || vars.ARM_SUBSCRIPTION_ID }}
+      TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
+      TF_STATE_BLOB_ACCOUNT: ${{ vars.TF_STATE_BLOB_ACCOUNT }}
+      TF_STATE_BLOB_CONTAINER: ${{ vars.TF_STATE_BLOB_CONTAINER || 'tfstate' }}
+      TF_VAR_FILE: ${{ vars.TF_VAR_FILE || format( '{0}-terraform.tfstate', inputs.environment) }}
+      TF_BLOB_FILE: ${{ vars.TF_BLOB_FILE || format( '{0}-terraform.tfstate', inputs.environment) }}
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set Extra TF_VARS
+        id: set-tf-vars
+        if: ${{ vars.EXTRA_TF_VARS != '' }}
+        uses: bel-from-nz/actions-learning-pathway/.github/actions/tfvar@main
+        with:
+          tfvar-list: ${{ vars.EXTRA_TF_VARS }}
+
+      - name: Echo Env Vars
+        run: |
+          echo "Sub: ${{ env.TF_SUBSCRIPTION_ID }}"
+          echo "RG: ${{ env.TF_STATE_RESOURCE_GROUP }}"
+          echo "Storage: ${{ env.TF_STATE_BLOB_ACCOUNT }}"
+          echo "Container: ${{ env.TF_STATE_BLOB_CONTAINER }}"
+          echo "vars: ${{ env.TF_VAR_FILE  }}"
+          echo "state: ${{ env.TF_BLOB_FILE }}"
+          echo "arm client: ${{ env.ARM_CLIENT_ID }}"
+          echo "arm sub: ${{ env.ARM_SUBSCRIPTION_ID }}"
+          echo "arm tenant: ${{ env.ARM_TENANT_ID }}"
+          echo "TF VAR 1: ${{ env.TF_VAR_test1 }}"
+          echo "TF VAR 2: ${{ env.TF_VAR_test2 }}"
+
+  runapplytest:
+    needs: setenvs
+    name: "Run ${{ inputs.terraform_action == 'destroy' && 'Destroy' || 'Apply' }} test for ${{ inputs.environment }}"
+    runs-on: ${{ inputs.runner }}
+    environment: "${{ inputs.environment }}_apply"
+    if: ${{ contains(fromJSON('["destroy", "apply"]'), inputs.terraform_action) }}
+    env:
+      ARM_CLIENT_ID: "${{ vars.ARM_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ vars.ARM_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ vars.ARM_TENANT_ID }}"
+      ARM_USE_AZUREAD: true
+      ARM_USE_OIDC: true
+    steps:
+      - name: Echo Env Vars for apply
+        run: |
+          echo "arm client: ${{ env.ARM_CLIENT_ID }}"
+          echo "arm sub: ${{ env.ARM_SUBSCRIPTION_ID }}"
+          echo "arm tenant: ${{ env.ARM_TENANT_ID }}"

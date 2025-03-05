@@ -1,0 +1,36 @@
+name: test-env-file
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment for workflow'
+        required: true
+        type: choice
+        options:
+          - development
+          - test
+          - production
+      terraform_action:
+        description: 'Terraform Action'
+        default: apply
+        type: choice
+        options:
+          - apply
+          - destroy
+          - planonly
+
+defaults:
+  run:
+    shell: bash
+
+run-name: ${{ inputs.terraform_action }} to ${{ inputs.environment }} by @${{ github.actor }} for ${{ github.workflow }}
+
+jobs:
+  call-test-env-file:
+    name: "Run Var Test for ${{ inputs.environment }}"
+    uses: bel-from-nz/actions-learning-pathway/.github/workflows/test-env-vars-template.yml@main
+    with:
+      environment: ${{ inputs.environment }}
+      terraform_action: ${{ inputs.terraform_action }}
+      runner: ubuntu-latest
