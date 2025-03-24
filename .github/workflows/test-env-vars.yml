@@ -35,9 +35,10 @@ jobs:
 
   call-test-env-vars:
     name: "Run Var Test for ${{ inputs.environment }}"
+    needs: call-test-sub-id
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/test-env-vars-template.yml@main
     with:
       environment: ${{ inputs.environment }}
       terraform_action: ${{ inputs.terraform_action }}
       runner: ubuntu-latest
-      azure_subscription_id: ${{ jobs.call-test-sub-id.outputs.azure_subscription_id }}
+      azure_subscription_id: ${{ needs.call-test-sub-id.outputs.azure_subscription_id }}
