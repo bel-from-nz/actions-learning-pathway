@@ -36,7 +36,7 @@ jobs:
       ARM_USE_AZUREAD: true
       ARM_USE_OIDC: true
       ## backend vars
-      TF_SUBSCRIPTION_ID: ${{ vars.TF_SUBSCRIPTION_ID || vars.ARM_SUBSCRIPTION_ID }}
+      TF_SUBSCRIPTION_ID: ${{ vars.TF_SUBSCRIPTION_ID != '' && vars.TF_SUBSCRIPTION_ID || ( vars.ARM_SUBSCRIPTION_ID != '' && vars.ARM_SUBSCRIPTION_ID || inputs.azure_subscription_id )}}
       TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
       TF_STATE_BLOB_ACCOUNT: ${{ vars.TF_STATE_BLOB_ACCOUNT }}
       TF_STATE_BLOB_CONTAINER: ${{ vars.TF_STATE_BLOB_CONTAINER || 'tfstate' }}
