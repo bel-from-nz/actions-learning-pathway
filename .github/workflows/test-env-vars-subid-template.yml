@@ -1,0 +1,33 @@
+name: test-env-vars-subid-template
+
+on:
+  workflow_call:
+    inputs:
+      runner:
+        description: 'Runner for workflow'
+        type: string
+        default: ubuntu-latest
+        required: true
+    outputs:
+      azure_subscription_id:
+        description: 'Deployment Subscription ID. Only required if creating a subscription as part of the deployment and not know prior.'
+        value: ${{ jobs.setsubid.outputs.subscription_id }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  setsubid:
+    name: "Set subid"
+    runs-on: ${{ inputs.runner }}
+    outputs:
+      subscription_id: ${{ steps.set-sub-id-action.outputs.subscription_id }}
+    steps:
+      - name: Set Subid
+        id: set-sub-id-action
+        shell: pwsh
+        run: |
+          $SUBID="e0ae5968-f266-4ca7-a59a-262f028a4555"
+          echo "Subscription: $SUBID"
+          echo "subscription_id=$SUBID" >> $env:GITHUB_OUTPUT
