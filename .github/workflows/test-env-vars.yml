@@ -28,8 +28,7 @@ run-name: ${{ inputs.terraform_action }} to ${{ inputs.environment }} by @${{ gi
 
 jobs:
   call-test-sub-id:
-    name: "Run sub id test"
-    if:  ${{ inputs.environment == 'test' }}
+    name: "Run sub id test for ${{ inputs.environment }}"
     uses: bel-from-nz/actions-learning-pathway/.github/workflows/test-env-vars-subid-template.yml@main
     with:
       runner: ubuntu-latest
