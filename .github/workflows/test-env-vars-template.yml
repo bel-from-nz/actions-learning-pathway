@@ -15,6 +15,9 @@ on:
         type: string
         default: ubuntu-latest
         required: true
+      azure_subscription_id:
+        description: 'Deployment Subscription ID. Only required if creating a subscription as part of the deployment and not know prior.'
+        type: string
 
 defaults:
   run:
@@ -27,7 +30,7 @@ jobs:
     environment: "${{ inputs.environment }}_plan"
     env:
       ## azure resource manager vars
-      ARM_CLIENT_ID: "${{ vars.ARM_CLIENT_ID }}"
+      ARM_CLIENT_ID: "${{ inputs.azure_subscription_id || vars.ARM_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ vars.ARM_SUBSCRIPTION_ID }}"
       ARM_TENANT_ID: "${{ vars.ARM_TENANT_ID }}"
       ARM_USE_AZUREAD: true
