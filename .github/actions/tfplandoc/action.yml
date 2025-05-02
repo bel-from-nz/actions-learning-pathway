@@ -11,7 +11,7 @@ runs:
       working-directory: ${{ inputs.terraform_root_path }}
       run: |
         INSTALL_TEMP=$RUNNER_TEMP/$(uuidgen)
-        sudo mkdir $INSTALL_TEMP
+        mkdir $INSTALL_TEMP
 
         echo "Current working directory: $(pwd)"
         echo "Current temp install directory: $INSTALL_TEMP"
