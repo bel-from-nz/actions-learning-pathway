@@ -10,18 +10,16 @@ runs:
       shell: bash
       working-directory: ${{ inputs.terraform_root_path }}
       run: |
-        echo "Current working directory: $(pwd)"
-        echo "Current temp directory: $RUNNER_TEMP"
-
-        curl -L "$(curl -s https://api.github.com/repos/Azure/tfplandoc/releases/latest | grep -o -E "https://.+?_linux_amd64.zip")" > $RUNNER_TEMP/tfplandoc.zip
-        unzip -o $RUNNER_TEMP/tfplandoc.zip -d $RUNNER_TEMP
-        mv $RUNNER_TEMP/tfplandoc_v* $RUNNER_TEMP/tfplandoc
-        sudo install $RUNNER_TEMP/tfplandoc /usr/local/bin
-        tfplandoc -h
-
         INSTALL_TEMP=$RUNNER_TEMP/$(uuidgen)
+        sudo mkdir $INSTALL_TEMP
+
+        echo "Current working directory: $(pwd)"
         echo "Current temp install directory: $INSTALL_TEMP"
 
-        sudo mkdir $INSTALL_TEMP
-        ls -l $RUNNER_TEMP
+        curl -L "$(curl -s https://api.github.com/repos/Azure/tfplandoc/releases/latest | grep -o -E "https://.+?_linux_amd64.zip")" > $INSTALL_TEMP/tfplandoc.zip
+        unzip -o $INSTALL_TEMP/tfplandoc.zip -d $INSTALL_TEMP
+        mv $INSTALL_TEMP/tfplandoc_v* $INSTALL_TEMP/tfplandoc
+        sudo install $INSTALL_TEMP/tfplandoc /usr/local/bin
+        tfplandoc -h
+
         ls -l $INSTALL_TEMP
