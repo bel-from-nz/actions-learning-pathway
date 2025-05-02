@@ -19,7 +19,7 @@ runs:
         sudo install $RUNNER_TEMP/tfplandoc /usr/local/bin
         tfplandoc -h
 
-        $INSTALL_TEMP="$RUNNER_TEMP/$(uuidgen)"
+        INSTALL_TEMP=$RUNNER_TEMP/$(uuidgen)
         echo "Current temp install directory: $INSTALL_TEMP"
 
         sudo mkdir $INSTALL_TEMP
