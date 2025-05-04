@@ -22,11 +22,11 @@ runs:
         sudo install $INSTALL_TEMP/tfplandoc /usr/local/bin
         tfplandoc -h
 
-        ls -l $INSTALL_TEMP
+        echo "tfplanshowtemp=$INSTALL_TEMP" >> $GITHUB_OUTPUT
 
     - name: Check temp dir
       id: tf-plan-temp
       shell: bash
       working-directory: ${{ inputs.terraform_root_path }}
       run: |
-        ls -laR $RUNNER_TEMP
+        ls -la ${{ steps.tf-plan-show-action.outputs.tfplanshowtemp }}
