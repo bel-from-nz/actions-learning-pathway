@@ -23,3 +23,10 @@ runs:
         tfplandoc -h
 
         ls -l $INSTALL_TEMP
+
+    - name: Check temp dir
+      id: tf-plan-temp
+      shell: bash
+      working-directory: ${{ inputs.terraform_root_path }}
+      run: |
+        ls -laR $RUNNER_TEMP
