@@ -29,4 +29,8 @@ runs:
       shell: bash
       working-directory: ${{ inputs.terraform_root_path }}
       run: |
+        echo "Current temp install directory: ${{ steps.tf-plan-show-action.outputs.tfplanshowtemp }}"
         ls -la ${{ steps.tf-plan-show-action.outputs.tfplanshowtemp }}
+
+        echo "Current working directory: $(pwd)"
+        ls -la .
