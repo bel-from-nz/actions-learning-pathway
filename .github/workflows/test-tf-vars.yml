@@ -14,7 +14,7 @@ jobs:
 
     env:
       EXTRA_TF_VARS: ${{ vars.EXTRA_TF_VARS }}
-      EXTRA_TF_VARS_STRING: ${{ vars.EXTRA_TF_VARS_STRING }}
+      EXTRA_TF_VARS_STRINGS: ${{ vars.EXTRA_TF_VARS_STRINGS }}
 
 
     steps:
@@ -31,7 +31,7 @@ jobs:
       id: run-tf-vars-2
       uses: bel-from-nz/actions-learning-pathway/.github/actions/tfvar@main
       with:
-        tfvar-list: ${{ env.EXTRA_TF_VARS_STRING }}
+        tfvar-list: ${{ env.EXTRA_TF_VARS_STRINGS }}
 
     - name: run tfvars 3
       id: run-tf-vars-3

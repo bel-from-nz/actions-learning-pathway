@@ -15,7 +15,7 @@ runs:
     id: set-tf-var
     shell: pwsh
     run: |
-      $extraVars=${{ inputs.tfvar-list }}
+      $extraVars='${{ inputs.tfvar-list }}'
 
       if ($extraVars.Length -eq 0)
       {
