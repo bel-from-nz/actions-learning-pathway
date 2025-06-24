@@ -5,7 +5,7 @@ description: Sets TF_VAR_ Environment Variables
 
 inputs:
   tfvar-list:
-    description: List of extra variables in the form of "key=value,key=value"
+    description: List of extra variables in the form of key=value,key=value. Quotes are not required
     required: true
 
 runs:
