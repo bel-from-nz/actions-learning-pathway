@@ -7,13 +7,13 @@ inputs:
   tfvar-list:
     description: List of extra variables in the form of "key=value,key=value"
     required: true
-    type: string
 
 runs:
   using: composite
   steps:
   - name: Set TF_VAR
     id: set-tf-var
+    shell: pwsh
     run: |
       $extraVars=${{ inputs.tfvar-list }}
 
@@ -43,4 +43,3 @@ runs:
           exit 1
         }
       }
-    shell: pwsh

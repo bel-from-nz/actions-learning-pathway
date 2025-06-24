@@ -1,13 +1,21 @@
 name: Test TF Vars
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      tfvars_input:
+        description: 'input tfvars'
+        type: string
+        default: 'name=default'
 
 jobs:
   testvars:
     runs-on: ubuntu-latest
+    environment: test_tfvars
 
     env:
-      TFVARS_1: ""
-      TFVARS_2: "test1=value1,test2=value2 and value3,test3_blah=blah"
+      EXTRA_TF_VARS: ${{ vars.EXTRA_TF_VARS }}
+      EXTRA_TF_VARS_STRING: ${{ vars.EXTRA_TF_VARS_STRING }}
+
 
     steps:
     - name: Checkout code
@@ -17,18 +25,21 @@ jobs:
       id: run-tf-vars-1
       uses: bel-from-nz/actions-learning-pathway/.github/actions/tfvar@main
       with:
-        tfvar-list: ${{ env.TFVARS_1 }}
+        tfvar-list: ${{ env.EXTRA_TF_VARS }}
 
     - name: run tfvars 2
       id: run-tf-vars-2
       uses: bel-from-nz/actions-learning-pathway/.github/actions/tfvar@main
       with:
-        tfvar-list: ${{ env.TFVARS_2 }}
+        tfvar-list: ${{ env.EXTRA_TF_VARS_STRING }}
+
+    - name: run tfvars 3
+      id: run-tf-vars-3
+      uses: bel-from-nz/actions-learning-pathway/.github/actions/tfvar@main
+      with:
+        tfvar-list: ${{ inputs.tfvars_input }}
 
     - name: Echo vars
       id: echo-vars
       run: |
-        echo $TF_VAR_test1
-        echo $TF_VAR_test2
-        echo $TF_VAR_test3_blah
-      shell: bash
+        echo "testing tfvars - check envs"
