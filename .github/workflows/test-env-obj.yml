@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      sub_name: ${{ format('sub_name{0}', inputs.target_environment) }}
+      sub_name: ${{ vars[format('sub_name_{0}', inputs.target_environment)] }}
 
     steps:
     - name: Echo environment variable
