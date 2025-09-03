@@ -1,0 +1,35 @@
+name: test-env-obj
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: 'Environment for workflow'
+        required: true
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
+
+defaults:
+  run:
+    shell: bash
+
+run-name: Test Env Obj ${{ inputs.target_environment }} by @${{ github.actor }} for ${{ github.workflow }}
+
+env:
+  sub_name_dev: "sub-dev-ae-001"
+  sub_name_test: "sub-test-ae-001"
+  sub_name_prod: "sub-prod-ae-001"
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+
+    env:
+      sub_name: ${{ vars[format('sub_name{0}', inputs.target_environment)] }}
+
+    steps:
+    - name: Echo environment variable
+      run: echo "My environment variable is $sub_name" # This is your variable that will not be masked
