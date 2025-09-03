@@ -43,5 +43,5 @@ jobs:
 
     - name: Echo json
       run: |
-        TEST=${{ fromJSON(env.env_obj)[0] }}
+        TEST=${{ fromJSON(env.env_obj)[0].env }}
         echo $TEST
