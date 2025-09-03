@@ -28,8 +28,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      sub_name: ${{ vars[format('sub_name{0}', inputs.target_environment)] }}
+      sub_name: ${{ format('sub_name{0}', inputs.target_environment) }}
 
     steps:
     - name: Echo environment variable
-      run: echo "My environment variable is $sub_name" # This is your variable that will not be masked
+      run: |
+        echo "My environment variable is ${{ env.sub_name }}" # This is your variable that will not be masked
