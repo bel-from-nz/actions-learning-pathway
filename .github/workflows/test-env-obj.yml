@@ -51,3 +51,7 @@ jobs:
     - name: Echo env
       run: |
         echo ${{env.FRUIT}}
+
+    - name: Echo fromJson
+      run: |
+        echo ${{fromJson(env.env_obj)[inputs.target_environment].name}}
