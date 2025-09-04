@@ -43,5 +43,9 @@ jobs:
 
     - name: Echo json
       run: |
-        TEST=${{ fromJSON(env.env_obj)[0].env }}
-        echo $TEST
+        echo ${{ fromJSON(env.env_obj) }} | jq -r '.[] | select (.env==${{inputs.target_environment}}) | .name '
+        NAME=(${{ fromJSON(env.env_obj) }} | jq -r '.[] | select (.env==${{inputs.target_environment}}) | .name ')
+        echo "FRUIT=$NAME" >> $GITHUB_ENV
+
+    - name: Echo env
+      run: echo ${{env.FRUIT}}
