@@ -23,11 +23,11 @@ env:
   sub_name_test: "sub-test-ae-001"
   sub_name_prod: "sub-prod-ae-001"
   env_obj: |
-    [
-      { "env" : "dev", "name": "apple", "quantity": 1 },
-      { "env" : "test","name": "orange", "quantity": 2 },
-      { "env" : "prod","name": "pear", "quantity": 1 }
-    ]
+    {
+      "dev": {"name": "apple","quantity": 1},
+      "test": {"name": "orange","quantity": 2},
+      "prod": {"name": "pear","quantity": 1}
+    }
 
 jobs:
   echo:
@@ -44,8 +44,8 @@ jobs:
     - name: Echo json
       run: |
         env_object='${{ env.env_obj }}'
-        echo $env_object | jq -r '.[] | select (.env=="${{inputs.target_environment}}") | .name '
-        NAME=$(echo $env_object | jq -r '.[] | select (.env=="${{inputs.target_environment}}") | .name ')
+        echo $env_object | jq -r '.${{inputs.target_environment}}) | .name'
+        NAME=$(echo $env_object | jq -r '.${{inputs.target_environment}}) | .name')
         echo "FRUIT=$NAME" >> $GITHUB_ENV
 
     - name: Echo env
