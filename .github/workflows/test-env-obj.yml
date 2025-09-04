@@ -43,8 +43,8 @@ jobs:
 
     - name: Echo json
       run: |
-        echo ${{ fromJSON(env.env_obj) }} | jq -r '.[] | select (.env==${{inputs.target_environment}}) | .name '
-        NAME=(${{ fromJSON(env.env_obj) }} | jq -r '.[] | select (.env==${{inputs.target_environment}}) | .name ')
+        echo ${{ fromJSON(env.env_obj) }} | jq -r '.[] | select (.env=="${{inputs.target_environment}}") | .name '
+        NAME=(${{ fromJSON(env.env_obj) }} | jq -r '.[] | select (.env=="${{inputs.target_environment}}") | .name ')
         echo "FRUIT=$NAME" >> $GITHUB_ENV
 
     - name: Echo env
